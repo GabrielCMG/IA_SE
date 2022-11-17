@@ -66,7 +66,7 @@ def datasets(batch_size=32, num_samples_subset=15000):
     return trainloader, trainloader_subset, testloader, classes
 
 
-def entrainement(net, device, trainloader, testloader, nom_fichier, n_epochs=70, lr=0.001):
+def entrainement(net, device, trainloader, testloader, n_epochs=70, lr=0.001):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(net.parameters(), lr=lr)
 
@@ -150,13 +150,15 @@ def entrainement(net, device, trainloader, testloader, nom_fichier, n_epochs=70,
         running_loss = 0
         net.train()
 
+    return train_stats
+
+
+def save(net, train_stats, nom_fichier):
     PATH = 'networks/densenet_' + nom_fichier + '.pth'
     torch.save(net.state_dict(), PATH)
 
     PATH2 = 'logs/data_' + nom_fichier + '.csv'
     train_stats.to_csv(PATH2, encoding='utf-8', index=False)
-
-    return train_stats
 
 
 def prunning(net, amount_Conv2D, amount_Linear):
@@ -165,6 +167,14 @@ def prunning(net, amount_Conv2D, amount_Linear):
             prune.l1_unstructured(module, name='weight', amount=amount_Conv2D)
         elif isinstance(module, torch.nn.Linear):
             prune.l1_unstructured(module, name='weight', amount=amount_Linear)
+
+
+def unprunning(net):
+    for name, module in net.named_modules():
+        if isinstance(module, torch.nn.Conv2d):
+            prune.remove(module, name='weight')
+        elif isinstance(module, torch.nn.Linear):
+            prune.remove(module, name='weight')
 
 
 def print_results(train_stats):
@@ -196,12 +206,17 @@ if __name__ == "__main__":
     device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
 
     trainloader, trainloader_subset, testloader, classes = datasets()
+
     net = DenseNetCifar().to(device)
 
     net.load_state_dict(torch.load('networks/densenet_naif.pth', map_location=device))
 
     prunning(net, 0.8, 0.8)
 
-    history = entrainement(net, device, trainloader_subset, testloader, "test", n_epochs=70)
+    train_stats = entrainement(net, device, trainloader, testloader, n_epochs=0)
 
-    print_results(history)
+    unprunning(net)
+
+    save(net, train_stats, "test")
+
+    print_results(train_stats)
