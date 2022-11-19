@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # import netwoks
-from DenseNet import DenseNetCifar
+from DenseNet import DenseNetCifar, DenseNet201
 from DenseNetFactorisation import DenseNetCifarFactorisation
 from DenseNetDepthwiseSeparable import DenseNetCifarDepthwiseSeparable
 
@@ -207,16 +207,10 @@ if __name__ == "__main__":
 
     trainloader, trainloader_subset, testloader, classes = datasets()
 
-    net = DenseNetCifar().to(device)
+    net = DenseNet201().to(device)
 
-    net.load_state_dict(torch.load('networks/densenet_naif.pth', map_location=device))
+    train_stats = entrainement(net, device, trainloader, testloader, n_epochs=50)
 
-    prunning(net, 0.8, 0.8)
-
-    train_stats = entrainement(net, device, trainloader, testloader, n_epochs=0)
-
-    unprunning(net)
-
-    save(net, train_stats, "test")
+    save(net, train_stats, "test_201")
 
     print_results(train_stats)
