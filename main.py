@@ -6,7 +6,7 @@ import pandas as pd
 
 # import netwoks
 from DenseNet import DenseNetCifar, DenseNet201
-from DenseNetFactorisation import DenseNetCifarFactorisation
+from DenseNetGroupedConv import DenseNetCifarGroupedConv
 from DenseNetDepthwiseSeparable import DenseNetCifarDepthwiseSeparable
 
 # pytorch imports
@@ -161,7 +161,7 @@ def save(net, train_stats, nom_fichier):
     train_stats.to_csv(PATH2, encoding='utf-8', index=False)
 
 
-def prunning(net, amount_Conv2D, amount_Linear):
+def pruning(net, amount_Conv2D, amount_Linear):
     for name, module in net.named_modules():
         if isinstance(module, torch.nn.Conv2d):
             prune.l1_unstructured(module, name='weight', amount=amount_Conv2D)
@@ -169,7 +169,7 @@ def prunning(net, amount_Conv2D, amount_Linear):
             prune.l1_unstructured(module, name='weight', amount=amount_Linear)
 
 
-def unprunning(net):
+def unpruning(net):
     for name, module in net.named_modules():
         if isinstance(module, torch.nn.Conv2d):
             prune.remove(module, name='weight')
