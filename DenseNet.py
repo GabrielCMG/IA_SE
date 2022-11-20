@@ -6,6 +6,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+"""
+Implémentation de DenseNet (aucunes modifications effectuées)
+"""
+
 
 class Bottleneck(nn.Module):
     def __init__(self, in_planes, growth_rate):

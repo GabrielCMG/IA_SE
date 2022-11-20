@@ -6,6 +6,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+"""
+Implémentation de DenseNet avec Grouped Convolutions. Les modification par rapport au réseau original sont effectuées
+aux lignes 19, 21 et 34 de ce fichier.
+"""
+
 
 class Bottleneck(nn.Module):
     def __init__(self, in_planes, growth_rate):
