@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 """
-Implémentation de DenseNet (aucunes modifications effectuées)
+Implémentation de DenseNet (aucunes modifications effectuées).
 """
 
 
