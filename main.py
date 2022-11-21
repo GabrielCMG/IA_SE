@@ -272,8 +272,8 @@ def printComparaison():
            [3923, 91.77, "DenseNet sur CIFAR-10 (config 1)"],
            [67127, 92.12, "DenseNet sur CIFAR-10 (config 2)"],
            [1208, 89.65, "DenseNet avec Convolution Groupée sur CIFAR-10"],
-           [3036, 91.52, "DenseNet avec Depthwise Separation Convolutions sur CIFAR-10"],
-           [1503, 91.36, "DenseNet avec Pruning sur CIFAR-10 (80%)"],
+           [3036, 91.36, "DenseNet avec Depthwise Separation Convolutions sur CIFAR-10"],
+           [1503, 91.52, "DenseNet avec Pruning sur CIFAR-10 (80%)"],
            [1095, 89.46, "DenseNet avec Pruning sur CIFAR-10 (90%)"],
            [537, 88.25, "DenseNet avec Convolution Groupée et Pruning sur CIFAR-10"],
            [1217, 89.77, "DenseNet avec Depthwise Separation Convolutions et Pruning sur CIFAR-10"]]
